@@ -10,6 +10,10 @@
     Fecha: 14-Sept-2015
 '''
 import math
+import matplotlib
+matplotlib.use("Qt4Agg")
+from matplotlib import pyplot as plt
+from matplotlib import gridspec
 
 # Listas Globales
 dafA= []        # Guarda los valores derivada hacia adelante funcion A
@@ -24,6 +28,9 @@ dcfA= []        # Guarda los valores derivada centrada funcion A
 dcfB= []        # Guarda los valores derivada centrada funcion B
 dcfC= []        # Guarda los valores derivada centrada funcion C
 
+drfA= []        # Guarda los valores derivada real funcion A
+drfB= []        # Guarda los valores derivada real funcion B
+drfC= []        # Guarda los valores derivada real funcion C
 
 # Se definen cada una de las funciones, recibe por parametro x:un valor para calcular la funcion
 def funcionA(x):
@@ -116,13 +123,20 @@ def calcular(h):
 
         del temp[:]    # Limpiamos lista temporal
 
+        drfA.append(derivadaA(x))    #Calcula derivada real y guarda en lista funcion A
+        drfB.append(derivadaB(x))    #Calcula derivada real y guarda en lista funcion B
+        drfC.append(derivadaC(x))    #Calcula derivada real y guarda en lista funcion C
+
         x+= h    #Incrementa el paso
 
 # Imprime tabla de valores
-# Param:  datos: lista con valores aprox  // h: valor de paso  // titulo: texto titulo tabla
-def imprimirTabla(datos, h, titulo):
-    print "\n:::::: %s ::::::" % (titulo)
-    print "{0:10s} | {1:10s} | {2:10s} | {3:10s} | {4:10s} | {5:10s} | {6:10s}".format("Valor X", "e^x - 1", "e^x", "E", "|Et|","Er","Erp",)
+# Param:  datos: lista con valores aprox  // datosR:lista derivadas reales   //
+#          h: valor de paso  // etiqueta: tupla texto titulo tabla y texto funciones
+def imprimirTabla(datosA, datosR, h, etiqueta):
+    print "\n:::::: %s ::::::" % (etiqueta[0])
+    print "f(x)= ",etiqueta[1]
+    print "f\'(x)= ", etiqueta[2]
+    print "\n{0:12s} | {1:12s} | {2:12s} | {3:12s} | {4:12s} | {5:12s} | {6:12s}".format("Valor X","f\'(x) Aprox", "f\'(x) Real", "Et", "|Et|","Er","Erp",)
 
     x= -5
     i= 0    #Contador de ciclo
@@ -133,25 +147,83 @@ def imprimirTabla(datos, h, titulo):
     Erp= 0   # Error Relativo Porcentual
 
     while x <= 5:
-        v_real= derivadaA(x)    # Calcula el valor en la derivada real de la función
-        Et= v_real - datos[i]
+        v_real= datosR[i]
+        Et= v_real - datosA[i]
         Eta= abs(Et)
-        Er= (abs(v_real - datos[i])) / v_real
-        Erp= Er * 100
+        if v_real != 0:
+            Er= (abs(v_real - datosA[i])) / v_real
+            Erp= Er * 100
 
-        print "{0:10f} | {1:10f} | {2:10f} | {3:10f} | {4:10f} | {5:10f} | {6:10.2f}".format(x,datos[i], v_real, Et, Eta, Er , Erp)
+        print "{0:12f} | {1:12f} | {2:12f} | {3:12f} | {4:12f} | {5:12f} | {6:12.2f}".format(x,datosA[i], v_real, Et, Eta, Er , Erp)
 
         i+= 1
         x+= h
+
+
+# Funcion graficar, realiza c/u de las graficas derivadas aproximadas y reales
+def graficar(h):
+
+    valoresX= []
+    x=-5
+
+    while x <= 5:
+        valoresX.append(x)
+        x+= h
+
+    fig= plt.figure()
+    gs= gridspec.GridSpec(3, 1)    #Creamos la cuadricula 3 filas x 1 Columna
+
+    gf1= fig.add_subplot(gs[0,0])
+    dat,= gf1.plot(valoresX,datfA, "b-", label="Deriv. Atras")
+    dc,= gf1.plot(valoresX,dcfA, "r-", label="Deriv. Centrada")
+    da,= gf1.plot(valoresX,dafA, "g-", label="Deriv. Adelante")
+    dr,= gf1.plot(valoresX,drfA, "k-", label="Deriv. Real")
+    gf1.legend(handles= [dat,dc,da,dr], loc=2)
+    gf1.grid(True)
+
+    gf2= fig.add_subplot(gs[1,0])
+    gf2.plot(valoresX,datfB, "b-")
+    gf2.plot(valoresX,dcfB, "r-")
+    gf2.plot(valoresX,dafB, "g-")
+    gf2.plot(valoresX,drfB, "k-")
+    gf2.grid(True)
+
+    gf3= fig.add_subplot(gs[2,0])
+    gf3.plot(valoresX,datfC, "b-")
+    gf3.plot(valoresX,dcfC, "r-")
+    gf3.plot(valoresX,dafC, "g-")
+    gf3.plot(valoresX,drfC, "k-")
+    gf3.grid(True)
+
+    #fig= plt.gcf()
+
+    plt.show()
+
+
+
 # -------------------------- Programa ------------------------------------------
 
-h= input("Ingrese Valor de Paso h--> ")
+h= input("\nIngrese Valor de Paso h--> ")
 
 funciones=('e^x - 1', 'sen(2x)^3 + x^2', 'x^4 + 3x^2 - cos(x)')
 
 calcular(h)
 
-#imprimirTablaA(dafA, datfA, dcfA, h)
-imprimirTabla(dafA, h, "DERIVADA HACIA ADELANTE")
-imprimirTabla(datfA, h, "DERIVADA HACIA ATRAS")
-imprimirTabla(dcfA, h, "DERIVADA CENTRADA")
+print "\nFUNCION e^x -1"
+imprimirTabla(datfA, drfA, h, ("DERIVADA HACIA ATRAS","e^x - 1","e^x"))
+imprimirTabla(dcfA,drfA, h, ("DERIVADA CENTRADA","e^x - 1","e^x"))
+imprimirTabla(dafA,drfA, h, ("DERIVADA HACIA ADELANTE","e^x - 1","e^x"))
+
+print "\n\n\nFUNCION sen(2x)^3  + x^2"
+imprimirTabla(datfB,drfB, h, ("DERIVADA HACIA ATRAS","sen(2x)^3  + x^2","6*Sen(2x)^2 * Cos(2x) + 2x"))
+imprimirTabla(dcfB,drfB, h, ("DERIVADA CENTRADA","sen(2x)^3  + x^2","6*Sen(2x)^2 * Cos(2x) + 2x"))
+imprimirTabla(dafB,drfB, h, ("DERIVADA HACIA ADELANTE","sen(2x)^3  + x^2","6*Sen(2x)^2 * Cos(2x) + 2x"))
+
+print "\n\n\nFUNCION sen(2x)^3  + x^2"
+imprimirTabla(datfC,drfC, h, ("DERIVADA HACIA ATRAS", "sen(2x)^3  + x^2", "4x^3 + 6x + sen(x)"))
+imprimirTabla(dcfC,drfC, h, ("DERIVADA CENTRADA", "sen(2x)^3  + x^2", "4x^3 + 6x + sen(x)"))
+imprimirTabla(dafC,drfC, h, ("DERIVADA HACIA ADELANTE", "sen(2x)^3  + x^2", "4x^3 + 6x + sen(x)"))
+
+
+# Muestra graficas
+graficar(h)
