@@ -26,3 +26,7 @@ for i in range(0,11):
 
 plt.plot(fx)
 plt.show()
+
+del xi
+del x_sig
+del fx
