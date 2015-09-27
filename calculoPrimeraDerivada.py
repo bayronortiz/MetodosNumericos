@@ -150,19 +150,21 @@ def imprimirTabla(datosA, datosR, h, etiqueta):
         v_real= datosR[i]
         Et= v_real - datosA[i]
         Eta= abs(Et)
-        if v_real != 0:
-            Er= (abs(v_real - datosA[i])) / v_real
-            Erp= Er * 100
 
-        print "{0:12f} | {1:12f} | {2:12f} | {3:12f} | {4:12f} | {5:12f} | {6:12.2f}".format(x,datosA[i], v_real, Et, Eta, Er , Erp)
+        if v_real == 0:
+            v_real= 1*10**-9
+
+        Er= ((v_real - datosA[i])) / v_real
+        Erp= Er*100
+
+        print "{0:12f} | {1:12f} | {2:12f} | {3:12f} | {4:12f} | {5:12.2f} | {6:12.2f}".format(x,datosA[i], v_real, Et, Eta, Er , Erp)
 
         i+= 1
         x+= h
 
 
 # Funcion graficar, realiza c/u de las graficas derivadas aproximadas y reales
-def graficar(h):
-
+def graficarDerivadas(h):
     valoresX= []
     x=-5
 
@@ -170,10 +172,11 @@ def graficar(h):
         valoresX.append(x)
         x+= h
 
-    fig= plt.figure()
+    fig= plt.figure("Graficas Derivadas")
     gs= gridspec.GridSpec(3, 1)    #Creamos la cuadricula 3 filas x 1 Columna
 
     gf1= fig.add_subplot(gs[0,0])
+    plt.title("Funcion e^x - 1")
     dat,= gf1.plot(valoresX,datfA, "b-", label="Deriv. Atras")
     dc,= gf1.plot(valoresX,dcfA, "r-", label="Deriv. Centrada")
     da,= gf1.plot(valoresX,dafA, "g-", label="Deriv. Adelante")
@@ -182,6 +185,7 @@ def graficar(h):
     gf1.grid(True)
 
     gf2= fig.add_subplot(gs[1,0])
+    plt.title("Funcion sen(2x)^3  + x^2")
     gf2.plot(valoresX,datfB, "b-")
     gf2.plot(valoresX,dcfB, "r-")
     gf2.plot(valoresX,dafB, "g-")
@@ -189,17 +193,14 @@ def graficar(h):
     gf2.grid(True)
 
     gf3= fig.add_subplot(gs[2,0])
+    plt.title("Funcion x^4 + 3x^2 - cos(x)")
     gf3.plot(valoresX,datfC, "b-")
     gf3.plot(valoresX,dcfC, "r-")
     gf3.plot(valoresX,dafC, "g-")
     gf3.plot(valoresX,drfC, "k-")
     gf3.grid(True)
 
-    #fig= plt.gcf()
-
     plt.show()
-
-
 
 # -------------------------- Programa ------------------------------------------
 
@@ -219,11 +220,11 @@ imprimirTabla(datfB,drfB, h, ("DERIVADA HACIA ATRAS","sen(2x)^3  + x^2","6*Sen(2
 imprimirTabla(dcfB,drfB, h, ("DERIVADA CENTRADA","sen(2x)^3  + x^2","6*Sen(2x)^2 * Cos(2x) + 2x"))
 imprimirTabla(dafB,drfB, h, ("DERIVADA HACIA ADELANTE","sen(2x)^3  + x^2","6*Sen(2x)^2 * Cos(2x) + 2x"))
 
-print "\n\n\nFUNCION sen(2x)^3  + x^2"
+print "\n\n\nFUNCION x^4 + 3x^2 - cos(x)"
 imprimirTabla(datfC,drfC, h, ("DERIVADA HACIA ATRAS", "sen(2x)^3  + x^2", "4x^3 + 6x + sen(x)"))
 imprimirTabla(dcfC,drfC, h, ("DERIVADA CENTRADA", "sen(2x)^3  + x^2", "4x^3 + 6x + sen(x)"))
 imprimirTabla(dafC,drfC, h, ("DERIVADA HACIA ADELANTE", "sen(2x)^3  + x^2", "4x^3 + 6x + sen(x)"))
 
 
 # Muestra graficas
-graficar(h)
+graficarDerivadas(h)

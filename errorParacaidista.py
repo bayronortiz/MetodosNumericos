@@ -33,7 +33,7 @@ print "\nt | Sol Analitica | Sol Aproximado | Error\n"   #Convencion tabla
 while True:
     sol_analitica= ((g*m)/c) * (1-exp(-(c/m)*t))     #Calcula la solucion analitica
     vel_act= vel_ant + (g-(c/m)*vel_ant) * (t - t_ant)  # Calcula la solucion aprox
-    
+
     valores_analitica.append(sol_analitica)     #Agrega valores analiticos a la lista valores analitica
     valores_aprox.append(vel_act)       #Agrega valores aproximados a la lista valores_aprox
 
@@ -49,7 +49,7 @@ while True:
 
     t_ant= t
     t+=1        # Incrementa la variable tiempo
-    
+
 # Grafica de la solucion analitica y la solucion aproximada
 sol_analitica,= plt.plot(valores_analitica,"b-", label="Sol. Analitica")
 sol_aprox,= plt.plot(valores_aprox,"r-", label= "Sol. Aproximada")
@@ -58,5 +58,3 @@ plt.xlabel("Tiempo (s)")
 plt.ylabel("Velocidad (m/s)")
 plt.grid(True)
 plt.show()
-    
-    
