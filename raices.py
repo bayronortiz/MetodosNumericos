@@ -24,6 +24,7 @@ for i in range(0,11):
     fx.append(i**2 -2*i +3)
     x_act= x_sig
 
+plt.figure("Grafica")
 plt.plot(fx)
 plt.show()
 
