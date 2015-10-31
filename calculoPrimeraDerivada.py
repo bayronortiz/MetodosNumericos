@@ -11,7 +11,7 @@
 '''
 import math
 import matplotlib
-matplotlib.use("Qt4Agg")
+#matplotlib.use("Qt4Agg")
 from matplotlib import pyplot as plt
 from matplotlib import gridspec
 

@@ -12,51 +12,72 @@
 
 from math import *
 from matplotlib import pyplot as plt
+from matplotlib import gridspec
 
-def sin_solucion():
-	v1 = []
-	v2 = []
 
+#Listas
+s1 = []		#Lista valores funcion1 sin solucion
+s2 = []		#Lista valores funcion2 sin solucion
+
+i1 = []		#Lista valores funcion1 infinitas soluciones
+i2 = []		#Lista valores funcion2 infinitas soluciones
+
+m1 = []		#Lista valores funcion1 mal condicionado
+m2 = []		#Lista valores funcion2 mal condicionado
+
+
+# Funcion que calcula c/u de los valores de las funciones
+def calcular_valores():
 	for i in range(10):
-		v1.append(1 + (i / 2.0))
-		v2.append((1.0 / 2.0) + (i / 2.0))
-	
-	plt.plot(v1)
-	plt.plot(v2)
-	plt.grid(True)
-	plt.show()
-	
+		# Calcula valores s1 y s2  sin solucion
+		s1.append(1 + (i / 2.0))
+		s2.append((1 / 2.0) + (i / 2.0))
 
-def infinito_sol():
-	v1 = []
-	v2 = []
+		# Calcula valores i1 y i2 infinitas soluciones
+		i1.append(1 + (i / 2.0))
+		i2.append(1 + (i / 2.0))
 
+		#Calcula valores m1 y m2 mal condicionados
+		m1.append(1.1 + (2.3 / 5) * i)
+		m2.append(1 + (1 / 2.0) * i)
+
+
+def graficar_funciones():
+	valoresX = []
+	
 	for i in range(10):
-		v1.append(1 + (i / 2.0))
-		v2.append(1 + (i / 2.0))
+		valoresX.append(i)
 	
-	plt.plot(v1)
-	plt.plot(v2)
-	plt.grid(True)
+	fig = plt.figure("Tipos de Sistemas Lineales")
+	gs = gridspec.GridSpec(3,1) #Cuadricula de 3 filas x 1 Columna
+	
+	# Grafica 1
+	gf1 = fig.add_subplot(gs[0,0])
+	plt.title("Sistema Sin Solución")
+	f1, = gf1.plot(valoresX, s1, label="X2 = 1 + (X1/2)")
+	f2, = gf1.plot(valoresX, s2, label="X2 = (1/2) + (X1/2)")
+	gf1.legend(handles=[f1,f2], loc=4, fontsize="small")
+	gf1.grid(True)
+
+	#Grafica 2
+	gf2 = fig.add_subplot(gs[1,0])
+	plt.title("Sistema Infinitas Soluciones")
+	f1, = gf2.plot(valoresX, i1, label="X2 = 1 + (X1/2)")
+	f2, = gf2.plot(valoresX, i2, label="X2 = 1 + (X1/2)")
+	gf2.legend(handles=[f1,f2], loc=4, fontsize="small")
+	gf2.grid(True)
+
+	# Grafica 3
+	gf3 = fig.add_subplot(gs[2,0])
+	plt.title("Sistema Mal Condicionado")
+	f1, = gf3.plot(valoresX, m1, label="X2 = 1.1 + (2.3/5)*X1")
+	f2, = gf3.plot(valoresX, m2, label="X2 = 1 + (X1/2)")
+	gf3.legend(handles=[f1,f2], loc=4, fontsize="small")
+	gf3.grid(True)
+
 	plt.show()
 
 
-def mal_condicionado():
-	v1 = []
-	v2 = []
-
-	for i in range(10):
-		v1.append(1.1 + (2.3 / 5.0)*i)
-		v2.append(1 + (1.0 / 2.0)*i)
-	
-	plt.plot(v1)
-	plt.plot(v2)
-	plt.grid(True)
-	plt.show()
-
-
-
-# Inicio del Programa
-sin_solucion()
-infinito_sol()
-mal_condicionado()
+# Inicio Programa
+calcular_valores()	# Calcula los valores de c/u de las funciones
+graficar_funciones()	#Muestra c/u de la funciones en pantalla
