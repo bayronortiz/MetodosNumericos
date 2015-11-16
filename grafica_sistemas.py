@@ -1,4 +1,4 @@
-# -*- coding:utf-8 -*-
+#-*- coding:utf-8 -*-
 
 '''
 	Graficar funciones.
@@ -53,7 +53,7 @@ def graficar_funciones():
 	
 	# Grafica 1
 	gf1 = fig.add_subplot(gs[0,0])
-	plt.title("Sistema Sin Solución")
+	plt.title(u"Sistema Sin Solución")
 	f1, = gf1.plot(valoresX, s1, label="X2 = 1 + (X1/2)")
 	f2, = gf1.plot(valoresX, s2, label="X2 = (1/2) + (X1/2)")
 	gf1.legend(handles=[f1,f2], loc=4, fontsize="small")
