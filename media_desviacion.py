@@ -10,7 +10,7 @@
 import math
 import numpy as np
 
-# Funcion para hallar media aritmetica 
+# Funcion para hallar media aritmetica
 # param: datos:arreglo
 # return: valor_media:int
 def media_aritmetica(datos):
@@ -24,7 +24,7 @@ def media_aritmetica(datos):
 	return valor_media
 
 # Funcion que calcula la desviación estandar
-# param: datos:arreglo, media:numerico, 
+# param: datos:arreglo, media:numerico,
 # return: desv:numerico
 def desviacion_std(datos, media):
 	sumatoria = 0
