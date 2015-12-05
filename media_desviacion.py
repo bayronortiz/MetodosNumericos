@@ -32,9 +32,9 @@ def desviacion_std(datos, media):
 	for i in datos:
 		sumatoria += (i - media)**2
 	
-	desv = sumatoria / (len(datos)-1)
+	s = sumatoria / (len(datos)-1)
 
-	return math.sqrt(desv)
+	return math.sqrt(s)
 
 
 # Inicio del Programa
