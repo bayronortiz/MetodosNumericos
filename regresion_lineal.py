@@ -38,9 +38,9 @@ def calc_a1(v_x, v_y, v_xy, v_x_cuad):
     sum_x = sumatoria(v_x)      #sumatoria valores de x (consecutivo)
     sum_y = sumatoria(v_y)      #sumatoria valores de y (datos)
     sum_x_cua = sumatoria(v_x_cuad)     #sumatoria de xi²
-    
+
     a1 = ((n * sum_xy) - (sum_x * sum_y)) / float(((n * sum_x_cua) - (sum_x**2)))
-    
+
     return a1
 
 # Función que calcula el coeficiente a0
@@ -50,8 +50,6 @@ def calc_a0(v_x, v_y, a1):
     x_med = calc_media(v_x)
     y_med = calc_media(v_y)
 
-    print x_med
-    print y_med
     return float(y_med - a1 * x_med)
 
 
