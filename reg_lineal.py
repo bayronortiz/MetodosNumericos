@@ -15,17 +15,17 @@ class RegLineal():
     # param: v_val:vector
     # return: sum:numerico
     def sumatoria(self,v_val):
-        sum = 0     #Guarda el valor de la sumatoria
+        suma = 0     # Guarda el valor de la sumatoria
 
-        for i in v_val:     #Sumamos c/u de los valores
-            sum += i
+        for i in v_val:     # Sumamos c/u de los valores
+            suma += i
 
-        return sum      #Retornamos la suma
+        return suma      # Retornamos la suma
 
 
-    #funcion que calcula la sumatoria de una serie de datos elevando c/u al cuadrado
-    #param: v_val:vector numeros
-    #return sum_cua:numerico
+    # funcion que calcula la sumatoria de una serie de datos elevando c/u al cuadrado
+    # param: v_val:vector numeros
+    # return sum_cua:numerico
     def sumatoria_cua(self, v_val):
         sum_cua = 0
 
@@ -131,3 +131,20 @@ class RegLineal():
         r = ((n * sum_xy) - (sum_x * sum_y)) / ((math.sqrt(n * sum_x_cua - (sum_x ** 2))) * (math.sqrt(n * sum_y_cua - (sum_y ** 2))))
 
         return r
+
+
+    # Funcion que calcula el error estandar del estimado
+    # param: v_x:vector numerico, v_y:vector numerico
+    # return Syx: numeric float. Error estandar del estimado
+    def error_std(self, v_x, v_y):
+        a0 = self.calc_a0(v_x, v_y)    # Calcula el coeficiente a0
+        a1 = self.calc_a1(v_x, v_y)    # Calcula la pendiente, coeficiente a1
+        sr = 0
+
+        for xi, yi in zip(v_x, v_y):
+            sr += (yi - a0 - a1 * xi) ** 2
+
+        sr /= float(len(v_x) - 2)
+        Syx = math.sqrt(sr)
+
+        return Syx    # Retorna el Error Estimado
